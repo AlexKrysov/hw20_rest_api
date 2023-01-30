@@ -2,7 +2,7 @@ package com.krysov.models.lombok;
 
 import lombok.Data;
 
-public @Data class LoginResponseLombok {
+public @Data class LoginResponseLombokModel {
 
     private String token;
 }
