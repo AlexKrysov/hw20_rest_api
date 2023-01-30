@@ -8,6 +8,8 @@ import io.qameta.allure.restassured.AllureRestAssured;
 import org.junit.jupiter.api.Test;
 
 import static com.krysov.helpers.CustomApiListener.withCustomTemplates;
+import static com.krysov.specs.LoginSpecs.loginRequestSpec;
+import static com.krysov.specs.LoginSpecs.loginResponseSpec;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -99,6 +101,23 @@ public class ReqresTests {
                 .log().status()
                 .log().body()
                 .statusCode(200)
+                .extract().as(LoginResponseLombokModel.class);
+
+        assertThat(response.getToken()).isEqualTo("QpwL5tke4Pnpja7X4");
+    }
+
+    @Test
+    void loginWithSpecsTest() {
+        LoginBodyLombokModel data = new LoginBodyLombokModel();
+        data.setEmail("eve.holt@reqres.in");
+        data.setPassword("cityslicka");
+
+        LoginResponseLombokModel response = given(loginRequestSpec)
+                .body(data)
+                .when()
+                .post("/login")
+                .then()
+                .spec(loginResponseSpec)
                 .extract().as(LoginResponseLombokModel.class);
 
         assertThat(response.getToken()).isEqualTo("QpwL5tke4Pnpja7X4");
